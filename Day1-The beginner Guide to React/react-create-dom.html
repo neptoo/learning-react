@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+  <script type="text/javascript">
+    const rootElement = document.getElementById('root')
+
+    const element = React.createElement('div', {
+      children: 'Hello World',
+      className: 'container'
+    })
+    //  Or
+    // const element = React.createElement('div', {
+    //     className: 'container'
+    //   },
+    //   'Hello World')
+
+    // Array
+    const element = React.createElement('div', {
+      children: ['Hello world', ', Goodbye World'],
+      className: 'container'
+    })
+
+    // another React to be children
+    const element = React.createElement('div', {
+      // null --> no props to this element 
+      children: React.createElement('span', null, 'Hello', ' World'),
+      className: 'container'
+    })
+
+    // 'ReactDOM' not 'ReactDom' !IMPORTANT
+    ReactDOM.render(element, rootElement)
+  </script>
+</body>
+
+</html>
