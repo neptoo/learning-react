@@ -83,3 +83,30 @@ const element = (
 )
 ```
 
+## 可复用组件
+
+```jsx
+// 可以把messgae看作一个函数
+// 接收一个props传参 返回更多的React元素
+const Message = props => <div className="message">{props.msg}</div>
+const element = (
+  <div>
+    <Message msg="Hello World" />
+    <Message msg="Goodbye World" />
+  </div>
+)
+```
+
+也可以等同于这种写法
+
+```jsx
+const Message = props => <div>{props.children}</div>
+const element = (
+  <div>
+    <Message>Hello World</Message>
+    <Message>Goodbye World</Message>
+  </div>
+)
+ReactDOM.render(element, rootElement)
+```
+
