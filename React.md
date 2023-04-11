@@ -110,3 +110,31 @@ const element = (
 ReactDOM.render(element, rootElement)
 ```
 
+## 组件Props传的值不对
+
+> React v15.5 之后 需要下载 prop-types库才能使用
+
+使用PropTypes来验证从props接收的任何数据
+
+```js
+const rootElement = document.getElementById('root')
+
+function SayHello({firstName, lastName}) {
+  return (
+    <div>
+      Hello {firstName} {lastName}!
+    </div>
+  )
+}
+
+SayHello.propTypes = {
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+}
+
+const element = <SayHello firstName={false} />
+
+ReactDOM.render(element, rootElement)
+```
+
+> 如果控制台没有报错，也许是因为你引入的是`production`版本的React而不是`development`版本！
