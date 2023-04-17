@@ -139,3 +139,52 @@ ReactDOM.render(element, rootElement)
 
 > 如果控制台没有报错，也许是因为你引入的是`production`版本的React而不是`development`版本！
 
+## 二次渲染
+
+如何获取当前时间
+
+```js
+const time = new Date().toLocaleTimeString()
+```
+
+如果想要实时更新时间
+
+React的写法
+
+```js
+const rootElement = document.getElementById('root')
+function tick(){
+  const time = new Date().toLocaleTimeString()
+  const element = (<div>
+     <div>Current Time: </div>
+     {time}
+   </div>)
+   ReactDOM.render(element, rootElement)
+}
+setInterval(tick, 1000)
+```
+
+原生的写法
+
+```js
+const rootElement = document.getElementById('root')
+function tick(){
+  const time = new Date().toLocaleTimeString()
+  const element = `
+    <div>Current Time:</div>
+    ${time}
+  `
+  rootElement.innerHTML = element
+}
+setInterval(tick, 1000)
+```
+
+
+
+- 原生的是刷新整个body，从time到根元素
+- React只会更新局部time
+
+例如：页面上有两个输入框的时候，如果你用原生的写法，聚焦到某个元素上，下一秒页面刷新，聚焦消息；但是使用React，元素刷新不影响我的输入框聚焦。
+
+原理是：你使用React元素的时候，如果你把它赋值给`ReactDOM.render`或者触发二次渲染，它会比较你这一次返回的渲染内容和上一次的渲染，对两者做一个diff，然后只会更新不同的部分。
+
