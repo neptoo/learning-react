@@ -188,3 +188,29 @@ setInterval(tick, 1000)
 
 原理是：你使用React元素的时候，如果你把它赋值给`ReactDOM.render`或者触发二次渲染，它会比较你这一次返回的渲染内容和上一次的渲染，对两者做一个diff，然后只会更新不同的部分。
 
+## 混合样式
+
+我们有一系列的css样式要运用，渲染三个不同大小和背景色 Box
+
+创建了一个函数，接收className，与公共类box结合在一起
+
+```
+// 防止类名和传参 被覆盖/冲突
+function Box({className, ...rest}){
+	return <div className={`box ${className}`} {...rest} />
+}
+// 如果没有其他类 只有公共类 渲染的时候会有一个undefine的类
+function Box({className='', ...rest}){
+	return <div className={`box ${className}`.trim()} {...rest} />
+}
+// 增加一个属性
+function Box({className='',style, ...rest}){
+	return <div 
+		className={`box ${className}`.trim()}
+    style={{fontStyle: 'italic', ...style}}
+		{...rest} 
+	/>
+}
+// ...rest 表示用户还可以给Box加上 id 等其他属性
+```
+
