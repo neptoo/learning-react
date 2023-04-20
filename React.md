@@ -192,25 +192,34 @@ setInterval(tick, 1000)
 
 我们有一系列的css样式要运用，渲染三个不同大小和背景色 Box
 
-创建了一个函数，接收className，与公共类box结合在一起
+公共类和自定义类、自定义行内样式等样式的结合
 
-```
-// 防止类名和传参 被覆盖/冲突
-function Box({className, ...rest}){
-	return <div className={`box ${className}`} {...rest} />
-}
-// 如果没有其他类 只有公共类 渲染的时候会有一个undefine的类
+```jsx
 function Box({className='', ...rest}){
-	return <div className={`box ${className}`.trim()} {...rest} />
-}
-// 增加一个属性
-function Box({className='',style, ...rest}){
 	return <div 
 		className={`box ${className}`.trim()}
-    style={{fontStyle: 'italic', ...style}}
+		// 这里直接赋值给style 那么会根据行内样式和剩下的props(rest)的先后顺序 其中一个会被覆盖
+    // fontStyle 或者 backgroundColor
+    style={{fontStyle: 'italic'}}
 		{...rest} 
 	/>
 }
-// ...rest 表示用户还可以给Box加上 id 等其他属性
+// 解决方法是 将style传参，然后在Box方法里 将style进行拼接
+// style={{fontStyle: 'italic', ...style}}
 ```
+
+```jsx
+const element = (
+  <div>
+    <Box size="small" style={{backgroundColor: 'lightblue'}}>
+      small lightblue box
+    </Box>
+    <Box size="medium" style={{backgroundColor: 'pink'}}>
+      medium pink box
+    </Box>
+  </div>
+)
+```
+
+> ...rest 表示用户还可以给Box加上 id 等其他属性
 

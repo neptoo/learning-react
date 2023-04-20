@@ -30,14 +30,26 @@
   <script type="text/babel">
     function Box({style, size, className = '', ...rest}) {
       const sizeClassName = size ? `box--${size}` : ''
+      const prop = {
+        className: `box ${className} ${sizeClassName}`,
+        style: {fontStyle: 'italic', ...style},
+        ...rest
+      }
       return (
-        <div
-          className={`box ${className} ${sizeClassName}`}
-          style={{fontStyle: 'italic', ...style}}
-          {...rest}
-        />
+        <div {...prop} />
       )
     }
+
+    // function Box({style, size, className = '', ...rest}) {
+    //   const sizeClassName = size ? `box--${size}` : ''
+    //   return (
+    //     <div
+    //       className={`box ${className} ${sizeClassName}`}
+    //       style={{fontStyle: 'italic', ...style}}
+    //       {...rest}
+    //     />
+    //   )
+    // }
 
     const element = (
       <div>
