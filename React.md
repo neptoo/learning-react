@@ -223,3 +223,51 @@ const element = (
 
 > ...rest 表示用户还可以给Box加上 id 等其他属性
 
+## 事件处理
+
+```js
+// 给button添加绑定事件
+<button onClick={()=>{setState({eventCount: state.eventCount + 1})}}>Click Me</button>
+```
+
+也可以将事件独立出来
+
+```js
+function setClick(){
+  setState({eventCount: state.eventCount + 1})
+}
+<button onClick={setClick}>Click Me</button>
+```
+
+给input添加事件，并且将输入值赋值给username
+
+```js
+<input onBlur={(event)=>setState({username: event.target.value})} />
+```
+
+## State
+
+```js
+// 点击 name 聚焦在相应的 input 上， 使用htmlFor属性， 类似原生的label标签的for
+<label htmlFor="name">Name:</label>
+<input id="name" />
+```
+
+React has 'React Hook' for maintaining state for a component
+
+```jsx
+function Greeting(){
+  // React Hook仅能在函数内使用
+  const [name, setName] = React.useState('')
+  const handleChange = event => setName(event.target.value)
+  return (
+    <div>
+      <form>
+        <label htmlFor="name">Name:</label>
+        <input id="name" onChange={handleChange} />
+        {name ? <strong>Hello {name}</strong>: 'Please type your name'}
+      </form>
+    </div>)
+}
+```
+
