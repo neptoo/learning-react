@@ -271,3 +271,45 @@ function Greeting(){
 }
 ```
 
+## Side effect
+
+在输入框中输入某些值，然后将它存储在 localStorage 中；刷新页面，值就会被从 localStorage 中取出，然后渲染到 input 中。
+
+> 这就是我们称之为 Side Effect(副作用)。
+
+> 怎么理解React中的side-effect？
+>
+> 首先，pure function(纯函数)是指
+>
+> - 給定相同的輸入(傳入值)，一定會回傳相同輸出值結果(回傳值)
+> - 不會產生副作用
+> - 不依賴任何外部的狀態
+>
+> 这个在 React 中就是给一个 pure component 相同的 props，永远渲染出相同的界面，没有副作用。
+>
+> 要一個很清楚的概念是，Side Effect(副作用)並不是指"好"或者"不好"的意思，而是它有可能會影響到其他環境的使用情況。
+
+1.使用 `React.useEffect` ，将函数中存储的name 设置到localStorage中的name
+
+2.为了初始化获取到localStorage中的name，使用`window.localStorage.getItem('name')`，如果没有就初始化为空字符串
+
+3.为了确保input展示的是我们存储的name，给input设置了`value`属性
+
+```jsx
+function Greeting(){
+  const [name, setName] = React.useState(window.localStorage.getItem('name')|| '')
+  React.useEffect(()=>{
+    window.localStorage.setItem('name', name)
+  })
+  const handleChange = event => setName(event.target.value)
+  return (
+    <div>
+      <form>
+        <label htmlFor="name">Name:</label>
+        <input id="name" onChange={handleChange} value={name} />
+        {name ? <strong>Hello {name}</strong>: 'Please type your name'}
+      </form>
+    </div>)
+}
+```
+
