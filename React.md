@@ -313,3 +313,23 @@ function Greeting(){
 }
 ```
 
+
+
+## lazy initialization 延迟初始化/惰性初始化
+
+```jsx
+const [name, setName] = React.useState(window.localStorage.getItem('name')|| '')
+```
+
+> 上面这段代码，伴随着输入的时候，页面会重新渲染。
+>
+> 我们只需要在输入完成后，读取并存储到 localStorage 中，而不是每次重新渲染都读一次。
+
+React useState 提供了一个延迟初始化的特性：你可以提供一个 function 作为初始值，这样它就只会执行一次，避免不必要的性能损耗，而不是每次 re-rendered 时候执行。
+
+```jsx
+const [name, setName] = React.useState(() => {
+  return window.localStorage.getItem('name')|| ''
+})
+```
+
