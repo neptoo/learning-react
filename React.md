@@ -333,3 +333,56 @@ const [name, setName] = React.useState(() => {
 })
 ```
 
+
+
+## Use effect deps
+
+```jsx
+    const rootElement = document.getElementById("root");
+    function Greeting() {
+      const [name, setName] = React.useState(() => {
+        return window.localStorage.getItem("name") || "";
+      });
+      React.useEffect(() => {
+        // 看这里👇 点击一按钮 就会打印一次
+        console.log('Greeting useEffect')
+        window.localStorage.setItem("name", name);
+      });
+      const handleChange = (event) => setName(event.target.value);
+      return (
+        <div>
+          <form>
+            <label htmlFor="name">Name:</label>
+            <input id="name" onChange={handleChange} value={name} />
+            {name ? <strong>Hello {name}</strong> : "Please type your name"}
+          </form>
+        </div>
+      );
+    }
+    function App() {
+      const [count, setCount] = React.useState(0);
+      return (
+        <>
+        <button onClick={() => setCount((c) => c + 1)}>{count}</button>
+          <Greeting />
+        </>
+      );
+    }
+    ReactDOM.render(<App />, rootElement);
+```
+
+> 每次点击按钮的时候，会触发App组件重新渲染，与此同时会触发Greeting组件的渲染，然后会调用Greeting其中的useEffect。实际上这个 side effect 是不需要运行的，因为 name 没有改变。(which means it was called more than it to be)
+
+React.useEffect 提供了第二个参数，去优化这个问题。第二个参数叫 dependcyArray，你可以传入所有的你的sideEffect需要的依赖。
+
+```jsx
+React.useEffect(() => {
+  console.log('Greeting useEffect')
+  window.localStorage.setItem("name", name);
+}, [name]); // 👈
+```
+
+React提供了一个 eslint-plugin-react-hooks 的ESLint插件，用来检查hooks是否被正确使用，是否缺少依赖项。
+
+> 尽管effect callback被调用的次数超过了本需要的的次数，不是说它是一个bug，这只是一个可以优化程序运行速度的点。
+

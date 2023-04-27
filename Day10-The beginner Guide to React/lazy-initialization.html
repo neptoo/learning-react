@@ -7,9 +7,9 @@
     const rootElement = document.getElementById('root')
     function Greeting(){
       const [name, setName] = React.useState(() => {
-        // it won;t be called when you are typing
+        // it won't be called when you are typing
         console.log('get')
-        window.localStorage.getItem('name')|| ''
+        return window.localStorage.getItem('name')|| ''
       })
       console.log('render')
       React.useEffect(()=>{
