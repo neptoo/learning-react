@@ -373,7 +373,7 @@ const [name, setName] = React.useState(() => {
 
 > 每次点击按钮的时候，会触发App组件重新渲染，与此同时会触发Greeting组件的渲染，然后会调用Greeting其中的useEffect。实际上这个 side effect 是不需要运行的，因为 name 没有改变。(which means it was called more than it to be)
 
-React.useEffect 提供了第二个参数，去优化这个问题。第二个参数叫 dependcyArray，你可以传入所有的你的sideEffect需要的依赖。
+React.useEffect 提供了第二个参数，去优化这个问题。第二个参数叫 dependcyArray，你可以传入所有的你的sideEffect需要的依赖。 It's important to keep your dependency array accurate according to the dependency your callback relies on.
 
 ```jsx
 React.useEffect(() => {
@@ -386,3 +386,6 @@ React提供了一个 eslint-plugin-react-hooks 的ESLint插件，用来检查hoo
 
 > 尽管effect callback被调用的次数超过了本需要的的次数，不是说它是一个bug，这只是一个可以优化程序运行速度的点。
 
+## Custom hooks
+
+将之前的代码重组成一个可复用的function
