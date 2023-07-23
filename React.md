@@ -386,6 +386,52 @@ React提供了一个 eslint-plugin-react-hooks 的ESLint插件，用来检查hoo
 
 > 尽管effect callback被调用的次数超过了本需要的的次数，不是说它是一个bug，这只是一个可以优化程序运行速度的点。
 
-## Custom hooks
+## 使用React refs 操作DOM
 
-将之前的代码重组成一个可复用的function
+```js
+function Tilt({children}) {
+  const tiltRef = React.useRef()
+  
+  // console.log(tiltRef.current) // undefined,因为此时 REACT DOM节点还未被创建
+  //...
+  
+  // 与DOM交互是一个 side effect 最好是放在React.useEffect()中
+  React.useEffect(() => {
+    console.log(tiltRef.current)
+    const tiltNode = tiltRef.current
+    const vanillaTiltOptions = {
+      max: 25,
+      speed: 400,
+      glare: true,
+      'max-glare': 0.5,
+    }
+    VanillaTilt.init(tiltNode, vanillaTiltOptions)
+    return () => {
+      tiltNode.vanillaTilt.destroy()
+      // 移除vanillaTilt对DOM的引用
+      // 为了防止内存泄漏
+    }
+  }, [])
+  
+  // ....
+
+  return (
+    <div ref={tiltRef} className="tilt-root">
+      <div className="tilt-child">{children}</div>
+    </div>
+  )
+}
+```
+
+
+
+总结，我们想让这个 DOM 节点做一些花哨的事情，因此我们在页面中引入了 vanilla-tilt，这样我们就可以做到这一点了。
+
+为了访问 DOM 节点以便在其上初始化 vanilla-tilt，我们在 div 上使用了 ref 属性，并将从 React useRef 调用返回的内容赋值给它。该 ref 有一个 current 属性，我们可以用它来访问当前对象的值。
+
+组件加载之后，sideEffect callback将被调用，然后我们获取到tilt节点，设置vanilla-tilt options，去初始化vanilla-tilt。
+
+最后，我们用一个清理函数，移除 vanilla-tilt 中对 DOM 节点的所有引用和所有事件监听器。
+
+
+
