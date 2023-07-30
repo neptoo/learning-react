@@ -435,3 +435,74 @@ function Tilt({children}) {
 
 
 
+## 使用React操作表单
+
+```js
+console.dir(event.target)
+// 可以打印dom元素的属性
+```
+
+如何获取form表单里的input元素
+
+```js
+const form = event.target
+// const username = event.target[0].value
+// 或者
+const username = event.target.elements[0].value
+```
+
+点击 lable 聚焦到对应的输入框上
+
+```html
+<form>
+  <div>
+  	<label htmlFor="usernameInput">Username:</label>
+  	<input id="usernameInput" type="text" />  
+  </div>
+</form>
+```
+
+这时候我们就可以更精准的取到那个输入框，不管表单里的顺序是什么样的
+
+```js
+const username = event.target.elements.usernameInput.value
+```
+
+React中怎么获取元素
+
+```jsx
+function UsernameForm(){
+  const usernameRef = React.useRef()
+  function handleSubmit(event){
+    // 防止页面整页刷新
+    event.preventDefault()
+    const username = usernameRef.current.value
+    
+  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="usernameInput">Username:</label>
+  			<input ref={usernameRef} id="usernameInput" type="text" /> 
+      </div>
+      <button type="submit">submit</button>
+    </form>
+  )
+}
+```
+
+判断元素是否是小写
+
+```js
+const isLowerCase = username === username.toLowerCase()
+const error = isLowerCase ? null : 'Username must be lower case'
+```
+
+如果有错误就禁用button
+
+```jsx
+<button disabled={Boolean(error)} type="submit">Submit</button>
+```
+
+如果想要在用户输入的时候 知道输入是否符合规定 可以监听input的onChange事件
+
